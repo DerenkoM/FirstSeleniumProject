@@ -63,45 +63,5 @@ public class WaitTests {
         Assertions.assertEquals("name", nameInput.getAttribute("value"));
     }
 
-    public static class OpenBrowsersTest {
 
-        @Test
-        public void OpenBrowsers(){
-
-            WebDriver driver = null;
-            String browser = System.getProperty("browser");
-
-            if(browser.equals("chrome")){
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-            }
-            else if (browser.equals("edge")){
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
-            }
-            else{
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-            }
-
-
-            driver.get("http://ya.ru");
-            driver.manage().window().maximize();
-
-        }
-
-        @Test
-        public void yandexSearchTest(){
-            WebDriverManager.chromedriver().setup();
-            WebDriver driver = new ChromeDriver();
-
-            driver.get("http://ya.ru");
-            driver.findElement(By.xpath("//*[@id = 'text']")).sendKeys("Selenium");
-            driver.findElement(By.xpath("//*[@type= 'submit']")).click();
-
-            String firstText = driver.findElement(By.xpath("//*[@id= 'search-result']//li[1]/div")).getText();
-            Assertions.assertTrue(firstText.contains("Selenium"));
-
-        }
-    }
 }
