@@ -1,6 +1,5 @@
 package ru.academits;
 
-import com.codeborne.selenide.impl.WebDriverContainer;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -9,10 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 public class HerokuTests {
@@ -78,9 +75,6 @@ public class HerokuTests {
             Assertions.assertEquals("checkbox", i.getAttribute("type"));
         }
     }
-
-
-
 
     @AfterEach
     public void tearDown() {

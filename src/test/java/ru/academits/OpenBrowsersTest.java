@@ -33,10 +33,12 @@ public class OpenBrowsersTest {
         driver.get("http://ya.ru");
         driver.manage().window().maximize();
 
+        driver.quit();
+
     }
 
     @Test
-    public void yandexSearchTest(){
+    public void yandexSearchTest() throws InterruptedException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
 
@@ -46,6 +48,9 @@ public class OpenBrowsersTest {
 
         String firstText = driver.findElement(By.xpath("//*[@id= 'search-result']//li[1]/div")).getText();
         Assertions.assertTrue(firstText.contains("Selenium"));
+        Thread.sleep(3000);
+        driver.quit();
 
     }
+
 }
