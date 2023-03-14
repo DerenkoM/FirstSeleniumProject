@@ -12,7 +12,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +57,7 @@ public class DemoqaTests {
 
     @Test
     public void checkNameOfRegistrationFormTest() throws InterruptedException {
-        WebElement nameOfRegistrationFormElement = driver.findElement(By.xpath("//*[@class = 'practice-form-wrapper']/h5"));
+        WebElement nameOfRegistrationFormElement = driver.findElement(By.xpath("//h5"));
         String nameOfRegistrationFormText = nameOfRegistrationFormElement.getText();
         Assertions.assertEquals("Student Registration Form", nameOfRegistrationFormText, "FormName error");
         Thread.sleep(1000);
@@ -81,7 +83,7 @@ public class DemoqaTests {
     }
 
     @Test
-    public void checkboxesTextTest() throws InterruptedException {
+    public void checkboxesTextTest() {
         WebElement checkboxesElement1 = driver.findElement(By.xpath("//*[@id= 'hobbies-checkbox-1']"));
         String checkboxesText1 = checkboxesElement1.getAttribute("value");
         Assertions.assertEquals("1", checkboxesText1);
@@ -107,7 +109,7 @@ public class DemoqaTests {
     }
 
     @Test
-    public void radiobuttonTextTest() throws InterruptedException {
+    public void radiobuttonTextTest() {
         WebElement radioElement1 = driver.findElement(By.xpath("//*[@id= 'gender-radio-1']"));
         String radioText1 = radioElement1.getAttribute("value");
         Assertions.assertEquals("Male", radioText1);
@@ -163,123 +165,170 @@ public class DemoqaTests {
         System.out.println("текст " + dataText); // выводила в консоль, чтоб увидеть, что пишется одинаково
         Assertions.assertEquals(formatter.format(date), dataText);
     }
-
+    private String filePuth = "./sssss.jpg";
+    private String faleName = "sssss.jpg";
     @Test
     public void checkLoadFileTest() throws InterruptedException {
+
         WebElement loadFileElement = driver.findElement(By.xpath("//input[@type='file']"));
-        loadFileElement.sendKeys("C:\\Users\\Alex\\IdeaProjects\\FirstSeleniumProject\\src\\test\\java\\ru\\academits\\sssss.jpeg"); // не получается по относительному пути
+        File loadFileElement1 = new File(filePuth);
+        System.out.println("path" + loadFileElement1.getAbsolutePath());
+        loadFileElement.sendKeys(loadFileElement1.getAbsolutePath());
         Thread.sleep(3000);
-        if (driver.getPageSource().contains("sssss")) { // переходит в else
+        if (driver.getPageSource().contains(faleName)) { // переходит в else
             System.out.println("file uploaded");
         } else {
             System.out.println("file not uploaded");
         }
         String nameFile = driver.getPageSource(); // при выводе текста страницы на страницу нет фрагмента "sssss"
         System.out.println("page  " + nameFile);
-    }
 
+    } //!!!!!!!!!!!!!!!!!!!!
+
+    private  String firstNameAdd = "Masha";
+    private String lastNameAdd = "Lomova";
+    private String userEmailAdd = "Lomova@inbox.ru";
+    private  String genterAdd = "Female";
+    private String userNumberAdd = "9135634567";
+    private String dataMonth = "October";
+    private String dataYear = "2011";
+    private String dataDay = "12"; // 01,02....09, 10, 11 и тд
+    private String subjectsAdd1 = "Ma";
+    private String subjectsAdd2 = "Co";
+    private String hobbyValueAdd1 = "Sports";
+    private String hobbyValueAdd2 = "Music";
+    private String adressValueAdd = "129556, Novosibirsk city, Main Street, 16";
+    private String statesAdd = "Haryana";
+    private String citiesAdd = "Panipat";
     @Test
     public void completeTheFormTest() throws InterruptedException {
 
-        //заполнение формы
-        driver.findElement(By.xpath("//*[@id = 'firstName']")).sendKeys("Mila"); //имя
+        //значения переменных
+
+
+        WebElement firstName = driver.findElement(By.xpath("//*[@id = 'firstName']"));
+        WebElement lastName = driver.findElement(By.xpath("//*[@id = 'lastName']"));
+        WebElement userEmail = driver.findElement(By.xpath("//*[@id = 'userEmail']"));
+        WebElement genterWrapper = driver.findElement(By.xpath("//label[contains(text(), " + "\'" + genterAdd + "\'" + ")]"));
+        WebElement userNumber = driver.findElement(By.xpath("//*[@id = 'userNumber']"));
+        WebElement dateOfBirthInput = driver.findElement(By.xpath("//*[@id = 'dateOfBirthInput']"));
+        WebElement subjectsInput = driver.findElement(By.xpath("//*[@id = 'subjectsInput']"));
+        WebElement hobbyValue1 = driver.findElement(By.xpath("//label[contains(text(), " + "\'" + hobbyValueAdd1 + "\'" + ")]"));
+        WebElement hobbyValue2 = driver.findElement(By.xpath("//label[contains(text(), " + "\'" + hobbyValueAdd2 + "\'" + ")]"));
+
+        WebElement currentAddress = driver.findElement(By.xpath("//*[@id = 'currentAddress']"));
+        WebElement states = driver.findElement(By.xpath("//*[@id= 'react-select-3-input']"));
+        WebElement cities = driver.findElement(By.xpath("//*[@id= 'react-select-4-input']"));
+
+        //заполнение первой формы
+        firstName.sendKeys(firstNameAdd); //имя
+        lastName.sendKeys(lastNameAdd); //фамилия
+        userEmail.sendKeys(userEmailAdd); //почта
+        genterWrapper.click(); // пол.
+        userNumber.sendKeys(userNumberAdd); //телефон
+        dateOfBirthInput.click(); //дата рождения
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id = 'lastName']")).sendKeys("Derenko"); //фамилия
+        WebElement elemMonth = driver.findElement(By.xpath("//select[@class='react-datepicker__month-select']"));
+        Select dataMonthSelect = new Select(elemMonth);
+        dataMonthSelect.selectByVisibleText(dataMonth); // выбирает предыдущий месяц
+        WebElement elemYear = driver.findElement(By.xpath("//select[@class='react-datepicker__year-select']"));
+        Select dataYearSelect = new Select(elemYear);
+        dataYearSelect.selectByValue(dataYear);
+        WebElement elemDay = driver.findElement(By.xpath("//*[contains(@class, " + "\'day--0" + dataDay + "\'" + ")]"));
+        elemDay.click();
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id = 'userEmail']")).sendKeys("derenko-m@inbox.ru"); //почта
-        driver.findElement(By.xpath("//div[@id='genterWrapper']/div[2]/div[2]/label")).click(); // пол. тут не смогла обратиться к input. в ошибке что вызывается label.
-        // Кликнула на label и выбрался input. Так должно быть? Они связаны через айдишник.
+        subjectsInput.sendKeys(subjectsAdd1); //предмет 1
+        subjectsInput.sendKeys(Keys.RETURN); // нажатие Enter
+        subjectsInput.sendKeys(subjectsAdd2); //предмет 2
+        subjectsInput.sendKeys(Keys.RETURN); // нажатие Enter
+        hobbyValue1.click(); // хобби.
+        hobbyValue2.click(); // хобби.
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id = 'userNumber']")).sendKeys("9131234567"); //телефон
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id = 'dateOfBirthInput']")).click(); //дата рождения
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//button[@aria-label= 'Previous Month']")).click(); //переход на прошлый месяц. подумаю еще как выбрать более позднюю дату
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@class= 'react-datepicker__month']/div[4]/div[5]")).click(); //выбор числа 23 в месяце
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//*[@id = 'subjectsInput']")).sendKeys("ma"); //предметы, пока не получается вставить из выпадающего списка
-        driver.findElement(By.xpath("//*[@id = 'subjectsInput']")).sendKeys(Keys.RETURN); // нажатие Enter
-        Thread.sleep(1000);
-        List<WebElement> listItems = driver.findElements(By.xpath("//*[@id='subjectsContainer']"));
-        System.out.println("size " + listItems.size()); //тут пока не получается выбрать элемент из списка. буду еще думать
-        listItems.get(0).click();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//div[@id='hobbiesWrapper']/div[2]/div[2]/label")).click(); // хобби. тут не смогла обратиться к input напрямую
-        driver.findElement(By.xpath("//div[@id='hobbiesWrapper']/div[2]/div[3]/label")).click(); // хобби. тут не смогла обратиться к input напрямую
-        Thread.sleep(1000);
-        WebElement loadFileElement = driver.findElement(By.xpath("//input[@type='file']"));
+
+        WebElement loadFileElement = driver.findElement(By.xpath("//input[@type='file']")); //файл
         loadFileElement.sendKeys("C:\\Users\\Alex\\IdeaProjects\\FirstSeleniumProject\\src\\test\\java\\ru\\academits\\sssss.jpeg"); // не получается по относительному пути
-        driver.findElement(By.xpath("//*[@id = 'currentAddress']")).sendKeys("123456, Novosibirsk city, Main Street, 163");
-        Thread.sleep(1000);
 
-        /*driver.findElement(By.xpath("//*[@id = 'state']")).click();
-        List <WebElement> stateItems = driver.findElements(By.xpath("//div[@id='state']/div/div"));
-        System.out.println("size " + stateItems.size()); //тут пока не получается выбрать элемент из списка. буду еще думать
-        stateItems.get(0).click();
-        List <WebElement> cityItems = driver.findElements(By.xpath("//div[@id='city']/div/div/div"));
-        System.out.println("size " + cityItems.size()); //тут пока не получается выбрать элемент из списка. буду еще думать
-        cityItems.get(0).click();*/
-
-        //проверка обязательных полей по условию
-        //Assertions.assertNotEquals(0, driver.findElement(By.xpath("//input[@id = 'firstName']")).getText().length()); //имя
-        //Assertions.assertNotEquals(0, driver.findElement(By.xpath("//*[@id = 'lastName']")).getText().length()); //фамилия
-        //Assertions.assertNotEquals(0, driver.findElement(By.xpath("//*[@id = 'userNumber']")).getText().length()); //телефон
-        //Assertions.assertTrue(driver.findElement(By.xpath("//div[@id='genterWrapper']/div[2]/div[2]/label")).isDisplayed()); //телефон
-
-        driver.findElement(By.xpath("//*[@id = 'submit']")).click();
-        WebElement title = driver.findElement(By.xpath("//*[@id='example-modal-sizes-title-lg']")); //проверка заголовка, что мы на нужной странице
-        String titleText = title.getText();
-
-        //проверка данных на форме
+        currentAddress.sendKeys(adressValueAdd); //адрес
+        states.sendKeys(statesAdd); //штат
+        states.sendKeys(Keys.RETURN);
+        cities.sendKeys(citiesAdd); //город
+        cities.sendKeys(Keys.RETURN);
         Thread.sleep(5000);
+
+        // переход на вторую форму
+        driver.findElement(By.xpath("//*[@id = 'submit']")).click();
+        //проверка заголовка, что мы на нужной форме
+        WebElement title = driver.findElement(By.xpath("//*[@id='example-modal-sizes-title-lg']"));
+        String titleText = title.getText();
+        Assertions.assertEquals("Thanks for submitting the form", titleText, "Несоответствует название формы");
+        //проверка данных на форме
+        Thread.sleep(10000);
         // поле имя
-        String nameCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[1]/td[2]")).getText();
-        Assertions.assertTrue(nameCompleteText.contains("Mila"), "invalid value"); //равнозначные проверки далее применяла только эту
+        WebElement nameComplete = driver.findElement(By.xpath("//td[text()='Student Name']/../td[2]")); //td[text()='State and City']/../td[2]
+        String nameCompleteText = nameComplete.getText();
+        Assertions.assertTrue(nameCompleteText.contains(firstNameAdd), "invalid value of firstName");
         // поле фамилия
-        String lastNameCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[1]/td[2]")).getText();
-        Assertions.assertTrue(lastNameCompleteText.contains("Derenko"));
-        // поле телефон
-        String phoneCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[4]/td[2]")).getText();
-        Assertions.assertEquals(10, phoneCompleteText.length()); //проверка на количество цифр в телефоне
-        Assertions.assertEquals("9131234567", phoneCompleteText);
+        WebElement lastNameComplete = driver.findElement(By.xpath("//td[text()='Student Name']/../td[2]"));
+        String lastNameCompleteText = lastNameComplete.getText();
+        Assertions.assertTrue(lastNameCompleteText.contains(lastNameAdd));
         // поле почта
-        String emailCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[2]/td[2]")).getText();
-        Assertions.assertTrue(emailCompleteText.contains("-")); //проверка обязательных символов
-        Assertions.assertTrue(emailCompleteText.contains("@")); //проверка обязательных символов
-        Assertions.assertTrue(emailCompleteText.contains(".")); //проверка обязательных символов
-        Assertions.assertEquals("derenko-m@inbox.ru", emailCompleteText);
+        WebElement emailComplete = driver.findElement(By.xpath("//td[text()='Student Email']/../td[2]"));
+        String emailCompleteText = emailComplete.getText();
+        Assertions.assertEquals(userEmailAdd, emailCompleteText);
+        // проверка пола
+        WebElement genderComplete = driver.findElement(By.xpath("//td[text()='Gender']/../td[2]"));
+        String genderCompleteText = genderComplete.getText();
+        Assertions.assertEquals(genterAdd, genderCompleteText, "invalid value of gender");
+        // поле телефон
+        WebElement phoneComplete = driver.findElement(By.xpath("//td[text()='Mobile']/../td[2]"));
+        String phoneCompleteText = phoneComplete.getText();
+        Assertions.assertEquals(10, phoneCompleteText.length()); //проверка на количество цифр в телефоне
+        Assertions.assertEquals(userNumberAdd, phoneCompleteText);
         // поле дата
-        String dataCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[5]/td[2]")).getText();
+        WebElement dataComplete = driver.findElement(By.xpath("//td[text()='Date of Birth']/../td[2]"));
+        String dataCompleteText = dataComplete.getText();
         WebElement dataElement = driver.findElement(By.xpath("//*[@id = 'dateOfBirthInput']"));
         String dataText = dataElement.getAttribute("value");
         String[] words = dataText.split(" "); // разбила строку на отдельные слова
         for (int i = 0; i < words.length; i++) {
             Assertions.assertTrue(dataCompleteText.contains(words[i])); //проверка каждого отдельго слова в составе dataCompleteText второй формы
         }
+        //проверка Subjects
+        WebElement subjectsInputFirst = driver.findElement(By.xpath("//div[starts-with(text(), " + "\"" + subjectsAdd1 + "\"" + ")]")); //div появляется после введенного предмета
+        String subjectsInputFirstText = subjectsInputFirst.getText();
+        Assertions.assertTrue(subjectsInputFirstText.contains(subjectsAdd1));
+        subjectsInputFirst = driver.findElement(By.xpath("//div[starts-with(text(), " + "\'" + subjectsAdd2 + "\' " + ")]")); //перезадаю значение чтоб не вводить вторую переменную
+        subjectsInputFirstText = subjectsInputFirst.getText();
+        Assertions.assertTrue(subjectsInputFirstText.contains(subjectsAdd2));
+        // проверка хобби
+        WebElement hobbyComplete = driver.findElement(By.xpath("//td[text()='Hobbies']/../td[2]"));
+        String hobbyCompleteText = hobbyComplete.getText();
+        Assertions.assertEquals(hobbyValueAdd1 + ", " + hobbyValueAdd2, hobbyCompleteText, "invalid value of file"); //проверка по точному совпадению
+        Assertions.assertTrue(hobbyCompleteText.contains(hobbyValueAdd1)); // проверка по частичному совпадению
+        Assertions.assertTrue(hobbyCompleteText.contains(hobbyValueAdd2)); // проверка по частичному совпадению
+
         // поле адрес
-        String adressCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[9]/td[2]")).getText();
         WebElement adressElement = driver.findElement(By.xpath("//*[@id = 'currentAddress']"));
         String adressText = adressElement.getAttribute("value");
-        String[] adresswords = adressText.split(" "); // разбила строку на отдельные слова
-        for (int i = 0; i < adresswords.length; i++) {
-            Assertions.assertTrue(adressCompleteText.contains(adresswords[i])); //проверка каждого отдельго слова в составе adressCompleteText второй формы
+        String[] adressWords = adressText.split(" "); // разбила строку на отдельные слова
+        for (int i = 0; i < adressWords.length; i++) {
+            Assertions.assertTrue(adressValueAdd.contains(adressWords[i])); //проверка каждого отдельго слова в составе adressCompleteText второй формы
         }
+        // проверка штата и города
+        WebElement stateAndCityComplete = driver.findElement(By.xpath("//td[text()='State and City']/../td[2]"));
+        String stateAndCityCompleteText = stateAndCityComplete.getText();
+        Assertions.assertTrue(stateAndCityCompleteText.contains(statesAdd)); // проверка по частичному совпадению
+        Assertions.assertTrue(stateAndCityCompleteText.contains(citiesAdd)); // проверка по частичному совпадению
+
+
         // проверка файла
-        String fileCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[8]/td[2]")).getText();
+        String fileCompleteText = driver.findElement(By.xpath("//td[text()='Picture']/../td[2]")).getText();
+
         Assertions.assertEquals("sssss.jpeg", fileCompleteText, "invalid value of file");
         Assertions.assertTrue(fileCompleteText.contains(".jpeg")); //проверка форматов можно уточнить в ТЗ и дополнить
-        // проверка пола
-        String genderCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[3]/td[2]")).getText();
-        Assertions.assertEquals("Female", genderCompleteText, "invalid value of file");
-        // проверка хобби
-        String hobbyCompleteText = driver.findElement(By.xpath("//*[@class='table table-dark table-striped table-bordered table-hover']/tbody/tr[7]/td[2]")).getText();
-        Assertions.assertEquals("Reading, Music", hobbyCompleteText, "invalid value of file"); //проверка по точному совпадению
-        Assertions.assertTrue(hobbyCompleteText.contains("Reading")); // проверка по частичному совпадению
-        Assertions.assertTrue(hobbyCompleteText.contains("Music")); // проверка по частичному совпадению
 
-
-        driver.findElement(By.xpath("//button[@id = 'closeLargeModal']")).click();
+        WebElement closeForm = driver.findElement(By.xpath("//button[@id = 'closeLargeModal']"));
+        closeForm.click();
     }
 
     @AfterAll
