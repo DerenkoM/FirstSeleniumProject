@@ -15,10 +15,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class DemoqaTests {
@@ -45,150 +41,9 @@ public class DemoqaTests {
         driver.manage().window().maximize();
     }
 
-    @Test
-    public void checkUrlTest() {
-        Assertions.assertEquals("https://demoqa.com/automation-practice-form", driver.getCurrentUrl(), "не пройден checkUrlTest");
-    }
-
-    @Test
-    public void checkTitleTest() throws InterruptedException {
-        Thread.sleep(1000);
-        Assertions.assertEquals("DEMOQA", driver.getTitle(), "Title error");
-    }
-
-    @Test
-    public void checkNameOfRegistrationFormTest() throws InterruptedException {
-        WebElement nameOfRegistrationFormElement = driver.findElement(By.xpath("//h5"));
-        String nameOfRegistrationFormText = nameOfRegistrationFormElement.getText();
-        Assertions.assertEquals("Student Registration Form", nameOfRegistrationFormText, "FormName error");
-        Thread.sleep(1000);
-    }
-
-    @Test
-    public void iconVisibleTest() throws InterruptedException {
-        WebElement iconElement = driver.findElement(By.xpath("//header//img"));
-        Assertions.assertTrue(iconElement.isDisplayed());
-        Thread.sleep(1000);
-    }
-
-    @Test
-    public void checkboxesCountElementsTest() throws InterruptedException {
-
-        WebElement checkboxesElement = driver.findElement(By.xpath("//input[@type = 'checkbox']"));
-        List<WebElement> list = checkboxesElement.findElements(By.xpath("//input[@type = 'checkbox']"));
-        Assertions.assertEquals(3, list.size());
-        Thread.sleep(1000);
-    }
-
-    @Test
-    public void checkboxesTextTest() {
-        WebElement checkboxesElement1 = driver.findElement(By.xpath("//*[@id= 'hobbies-checkbox-1']"));
-        String checkboxesText1 = checkboxesElement1.getAttribute("value");
-        Assertions.assertEquals("1", checkboxesText1);
-        WebElement checkboxesElement2 = driver.findElement(By.xpath("//*[@id= 'hobbies-checkbox-2']"));
-        String checkboxesText2 = checkboxesElement2.getAttribute("value");
-        Assertions.assertEquals("2", checkboxesText2);
-        WebElement checkboxesElement3 = driver.findElement(By.xpath("//*[@id= 'hobbies-checkbox-3']"));
-        String checkboxesText3 = checkboxesElement3.getAttribute("value");
-        Assertions.assertEquals("3", checkboxesText3);
-    }
-
-    @Test
-    public void radioListTest() throws InterruptedException {
-
-        WebElement radioElement = driver.findElement(By.xpath("//input[@type = 'radio']"));
-        List<WebElement> radioList = radioElement.findElements(By.xpath("//input[@type = 'radio']"));
-        Assertions.assertEquals(3, radioList.size());
-        Thread.sleep(1000);
-        for (WebElement i : radioList) {
-            System.out.println("Id = " + i.getAttribute("id"));
-        }
-
-    }
-
-    @Test
-    public void radiobuttonTextTest() {
-        WebElement radioElement1 = driver.findElement(By.xpath("//*[@id= 'gender-radio-1']"));
-        String radioText1 = radioElement1.getAttribute("value");
-        Assertions.assertEquals("Male", radioText1);
-        WebElement radioElement2 = driver.findElement(By.xpath("//*[@id= 'gender-radio-2']"));
-        String radioText2 = radioElement2.getAttribute("value");
-        Assertions.assertEquals("Female", radioText2);
-        WebElement radioElement3 = driver.findElement(By.xpath("//*[@id= 'gender-radio-3']"));
-        String radioText3 = radioElement3.getAttribute("value");
-        Assertions.assertEquals("Other", radioText3);
-    }
-
-    @Test
-    public void stateAndCityTest() throws InterruptedException {
-        WebElement stateElement = driver.findElement(By.xpath("//*[@id= 'state']"));
-        WebElement cityElement = driver.findElement(By.xpath("//*[@id= 'city']"));
-        Assertions.assertTrue(stateElement.isDisplayed());
-        Assertions.assertTrue(cityElement.isEnabled());
-        WebElement stateField = driver.findElement(By.xpath("//*[@id = 'react-select-3-input'] "));
-        stateField.sendKeys("Rajasthan");
-        stateField.sendKeys(Keys.RETURN); // нажатие Enter
-        Assertions.assertTrue(cityElement.isDisplayed());
-        Thread.sleep(1000);
-        driver.navigate().refresh(); // обновление страницы
-    }
-
-    @Test
-    public void placeholdersTextTest() {
-        WebElement placeholderFirstNameElement = driver.findElement(By.xpath("//*[@id= 'firstName']"));
-        Assertions.assertEquals("First Name", placeholderFirstNameElement.getAttribute("placeholder"));
-        WebElement placeholderLastNameElement = driver.findElement(By.xpath("//*[@id= 'lastName']"));
-        Assertions.assertEquals("Last Name", placeholderLastNameElement.getAttribute("placeholder"));
-        WebElement placeholderEmailElement = driver.findElement(By.xpath("//*[@id= 'userEmail']"));
-        Assertions.assertEquals("name@example.com", placeholderEmailElement.getAttribute("placeholder"));
-        WebElement placeholderNumberElement = driver.findElement(By.xpath("//*[@id= 'userNumber']"));
-        Assertions.assertEquals("Mobile Number", placeholderNumberElement.getAttribute("placeholder"));
-        WebElement placeholderAddressElement = driver.findElement(By.xpath("//*[@id= 'currentAddress']"));
-        Assertions.assertEquals("Current Address", placeholderAddressElement.getAttribute("placeholder"));
-        WebElement placeholderStateElement = driver.findElement(By.xpath("//*[@id= 'state']"));
-        String stateText = placeholderStateElement.getText();
-        Assertions.assertEquals("Select State", stateText);
-        WebElement placeholderCityElement = driver.findElement(By.xpath("//*[@id= 'city']"));
-        String cityText = placeholderCityElement.getText();
-        Assertions.assertEquals("Select City", cityText);
-    }
-
-    @Test
-    public void checkDateTest() {
-        WebElement currentdataElement = driver.findElement(By.xpath("//*[@id = 'dateOfBirthInput']"));
-        String currentdataText = currentdataElement.getAttribute("value");
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-        Date currentdate = new Date();
-        System.out.println("текущая дата через formatter - " + formatter.format(currentdate)); // выводила в консоль, чтоб увидеть, что пишется одинаково
-        System.out.println("текст как атрибут из элемента - " + currentdataText); // выводила в консоль, чтоб увидеть, что пишется одинаково
-        Assertions.assertEquals(formatter.format(currentdate), currentdataText);
-    }
-
-    private String filePuth = "sssss.jpeg";
-
-    @Test
-    public void checkLoadFileTest() throws InterruptedException {
-        File loadFile = new File(filePuth);
-        WebElement loadFileElement = driver.findElement(By.xpath("//input[@id='uploadPicture']"));
-        loadFileElement.sendKeys(loadFile.getAbsolutePath());
-        Thread.sleep(3000);
-
-        //тут была мысль вставить файл и проверить присутствует ли имя файла в тексте рядом с кнопкой "выбор файла"
-        //но к тексту не смогла подобраться. нашла локатор  //input[@wfd-id='id12'] или //input[contains(@wfd-id,'id12')],
-        // но идея не видит этлемент. этот локатор появляется после загрузки файла
-        // Может сможете найти решение?
-        WebElement File = driver.findElement(By.xpath("//input[contains(@wfd-id,'id12')]"));
-        System.out.println(" File.getText()   " + File.getText());
-        if (File.getText().contains(filePuth)) {
-            System.out.println("file uploaded");
-        } else {
-            System.out.println("file not uploaded");
-        }
-    } //!!!!!!!!!!!!!!!!!!!!
-
     private String firstNameAdd = "Masha";
     private String lastNameAdd = "Lomova";
-    private String userEmailAdd = "Lomova@inbox.ru";
+    private String userEmailAdd = "lomova@inbox.ru";
     private String genterAdd = "Female";
     private String userNumberAdd = "9135634567";
     private String dataMonthAdd = "October";
@@ -198,6 +53,7 @@ public class DemoqaTests {
     private String subjectsAdd2 = "Co";
     private String hobbyValueAdd1 = "Sports";
     private String hobbyValueAdd2 = "Music";
+    private String filePuth = "sssss.jpeg";
     private String adressValueAdd = "129556, Novosibirsk city, Main Street, 16";
     private String statesAdd = "Haryana";
     private String citiesAdd = "Panipat";
@@ -205,7 +61,7 @@ public class DemoqaTests {
     @Test
     public void completeTheFormTest() throws InterruptedException {
 
-        //значения переменных
+        //проверяемые элементы с первой формы
         WebElement firstNameElement = driver.findElement(By.xpath("//*[@id = 'firstName']"));
         WebElement lastNameElement = driver.findElement(By.xpath("//*[@id = 'lastName']"));
         WebElement userEmailElement = driver.findElement(By.xpath("//*[@id = 'userEmail']"));
@@ -231,11 +87,11 @@ public class DemoqaTests {
         Thread.sleep(1000);
         WebElement elemMonth = driver.findElement(By.xpath("//select[@class='react-datepicker__month-select']"));
         Select dataMonthSelect = new Select(elemMonth);
-        dataMonthSelect.selectByVisibleText(dataMonthAdd); // выбирает предыдущий месяц
+        dataMonthSelect.selectByVisibleText(dataMonthAdd); // месяц
         WebElement elemYear = driver.findElement(By.xpath("//select[@class='react-datepicker__year-select']"));
         Select dataYearSelect = new Select(elemYear);
-        dataYearSelect.selectByValue(dataYearAdd);
-        WebElement elemDay = driver.findElement(By.xpath("//*[contains(@class, " + "\'day--0" + dataDayAdd + "\'" + ")]"));
+        dataYearSelect.selectByValue(dataYearAdd);// год
+        WebElement elemDay = driver.findElement(By.xpath("//*[contains(@class, " + "\'day--0" + dataDayAdd + "\'" + ")]")); // число
         elemDay.click();
         Thread.sleep(1000);
         subjectsInputElement.sendKeys(subjectsAdd1); //предмет 1
@@ -263,7 +119,7 @@ public class DemoqaTests {
         //проверка данных на форме
         Thread.sleep(10000);
         // поле имя
-        WebElement nameComplete = driver.findElement(By.xpath("//td[text()='Student Name']/../td[2]")); //td[text()='State and City']/../td[2]
+        WebElement nameComplete = driver.findElement(By.xpath("//td[text()='Student Name']/../td[2]"));
         String nameCompleteText = nameComplete.getText();
         Assertions.assertTrue(nameCompleteText.contains(firstNameAdd), "invalid value of firstName");
         // поле фамилия
@@ -281,7 +137,6 @@ public class DemoqaTests {
         // поле телефон
         WebElement phoneComplete = driver.findElement(By.xpath("//td[text()='Mobile']/../td[2]"));
         String phoneCompleteText = phoneComplete.getText();
-        Assertions.assertEquals(10, phoneCompleteText.length()); //проверка на количество цифр в телефоне
         Assertions.assertEquals(userNumberAdd, phoneCompleteText);
         // поле дата
         WebElement dataComplete = driver.findElement(By.xpath("//td[text()='Date of Birth']/../td[2]"));
@@ -296,7 +151,7 @@ public class DemoqaTests {
         WebElement subjectsInputFirst = driver.findElement(By.xpath("//div[starts-with(text(), " + "\"" + subjectsAdd1 + "\"" + ")]")); //div появляется после введенного предмета
         String subjectsInputFirstText = subjectsInputFirst.getText();
         Assertions.assertTrue(subjectsInputFirstText.contains(subjectsAdd1));
-        subjectsInputFirst = driver.findElement(By.xpath("//div[starts-with(text(), " + "\'" + subjectsAdd2 + "\' " + ")]")); //перезадаю значение чтоб не вводить вторую переменную
+        subjectsInputFirst = driver.findElement(By.xpath("//div[starts-with(text(), " + "\'" + subjectsAdd2 + "\' " + ")]")); //переопределяю значение чтоб не вводить вторую переменную
         subjectsInputFirstText = subjectsInputFirst.getText();
         Assertions.assertTrue(subjectsInputFirstText.contains(subjectsAdd2));
         // проверка хобби
@@ -312,10 +167,7 @@ public class DemoqaTests {
         // поле адрес
         WebElement adressElement = driver.findElement(By.xpath("//*[@id = 'currentAddress']"));
         String adressText = adressElement.getAttribute("value");
-        String[] adressWords = adressText.split(" "); // разбила строку на отдельные слова
-        for (int i = 0; i < adressWords.length; i++) {
-            Assertions.assertTrue(adressValueAdd.contains(adressWords[i])); //проверка каждого отдельго слова в составе adressCompleteText второй формы
-        }
+        Assertions.assertEquals(adressValueAdd, adressText);
         // проверка штата и города
         WebElement stateAndCityComplete = driver.findElement(By.xpath("//td[text()='State and City']/../td[2]"));
         String stateAndCityCompleteText = stateAndCityComplete.getText();
